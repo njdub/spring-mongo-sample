@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigInteger;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -19,5 +20,7 @@ public class Ticket {
 
     private String title;
     private String description;
+
+    private Instant created;
 
 }

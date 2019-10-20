@@ -6,6 +6,7 @@ import com.njdub.springmongosample.repository.TicketRepository;
 import com.njdub.springmongosample.service.TicketService;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
 
 @Component
@@ -21,6 +22,7 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = new Ticket();
         ticket.setTitle(ticketModel.getTitle());
         ticket.setDescription(ticketModel.getDescription());
+        ticket.setCreated(Instant.now());
         return ticketRepository.save(ticket);
     }
 
