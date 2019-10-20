@@ -1,6 +1,7 @@
 package com.njdub.springmongosample.service.impl;
 
 import com.njdub.springmongosample.domain.Ticket;
+import com.njdub.springmongosample.domain.TicketStatus;
 import com.njdub.springmongosample.model.NewTicketModel;
 import com.njdub.springmongosample.repository.TicketRepository;
 import com.njdub.springmongosample.service.TicketService;
@@ -23,6 +24,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setTitle(ticketModel.getTitle());
         ticket.setDescription(ticketModel.getDescription());
         ticket.setCreated(Instant.now());
+        ticket.setStatus(TicketStatus.PENDING);
         return ticketRepository.save(ticket);
     }
 

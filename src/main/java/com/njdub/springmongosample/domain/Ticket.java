@@ -20,7 +20,7 @@ public class Ticket {
 
     private String title;
     private String description;
-
+    private TicketStatus status;
     private Instant created;
 
 }
