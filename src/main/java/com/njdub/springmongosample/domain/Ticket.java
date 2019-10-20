@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.math.BigInteger;
 import java.time.Instant;
@@ -23,6 +25,7 @@ public class Ticket {
     private TicketStatus status;
     private Instant created;
 
+    @Field(targetType = FieldType.OBJECT_ID)
     private BigInteger managerId;
 
 }

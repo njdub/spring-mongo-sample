@@ -1,6 +1,7 @@
 package com.njdub.springmongosample.service;
 
 import com.njdub.springmongosample.domain.Manager;
+import com.njdub.springmongosample.domain.ManagerWithStatistic;
 import com.njdub.springmongosample.model.NewManagerModel;
 
 import java.math.BigInteger;
@@ -12,4 +13,6 @@ public interface ManagerService {
     Manager get(BigInteger id);
 
     List<Manager> getAll();
+
+    List<ManagerWithStatistic> getStatistic();
 }
