@@ -1,11 +1,13 @@
 package com.njdub.springmongosample.service.impl;
 
+import com.njdub.springmongosample.controller.exception.EntityNotFoundException;
 import com.njdub.springmongosample.domain.Manager;
 import com.njdub.springmongosample.model.NewManagerModel;
 import com.njdub.springmongosample.repository.ManagerRepository;
 import com.njdub.springmongosample.service.ManagerService;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Component
@@ -24,6 +26,11 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setFirstName(managerModel.getFirstName());
         manager.setLastName(managerModel.getLastName());
         return managerRepository.save(manager);
+    }
+
+    @Override
+    public Manager get(BigInteger id) {
+        return managerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Manager not found"));
     }
 
     @Override

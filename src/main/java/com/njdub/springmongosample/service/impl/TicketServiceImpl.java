@@ -5,6 +5,7 @@ import com.njdub.springmongosample.domain.Ticket;
 import com.njdub.springmongosample.domain.TicketStatus;
 import com.njdub.springmongosample.model.NewTicketModel;
 import com.njdub.springmongosample.repository.TicketRepository;
+import com.njdub.springmongosample.service.ManagerService;
 import com.njdub.springmongosample.service.TicketService;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,11 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
 
-    public TicketServiceImpl(TicketRepository ticketRepository) {
+    private final ManagerService managerService;
+
+    public TicketServiceImpl(TicketRepository ticketRepository, ManagerService managerService) {
         this.ticketRepository = ticketRepository;
+        this.managerService = managerService;
     }
 
     @Override
@@ -33,6 +37,15 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> getAll() {
         return ticketRepository.findAll();
+    }
+
+    @Override
+    public Ticket assignToManager(BigInteger ticketId, BigInteger managerId) {
+        managerService.get(managerId); // check that manager exist
+        Ticket ticket = get(ticketId);
+        ticket.setStatus(TicketStatus.IN_PROGRESS);
+        ticket.setManagerId(managerId);
+        return ticketRepository.save(ticket);
     }
 
     @Override

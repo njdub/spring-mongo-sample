@@ -11,5 +11,7 @@ public interface TicketService {
 
     List<Ticket> getAll();
 
+    Ticket assignToManager(BigInteger ticketId, BigInteger managerId);
+
     Ticket get(BigInteger id);
 }
