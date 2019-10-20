@@ -1,8 +1,9 @@
-package com.njdub.springmongosample.service;
+package com.njdub.springmongosample.service.impl;
 
 import com.njdub.springmongosample.domain.Ticket;
 import com.njdub.springmongosample.model.NewTicketModel;
 import com.njdub.springmongosample.repository.TicketRepository;
+import com.njdub.springmongosample.service.TicketService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
