@@ -23,4 +23,6 @@ public class Ticket {
     private TicketStatus status;
     private Instant created;
 
+    private BigInteger managerId;
+
 }

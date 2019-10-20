@@ -1,5 +1,6 @@
 package com.njdub.springmongosample.service.impl;
 
+import com.njdub.springmongosample.controller.exception.EntityNotFoundException;
 import com.njdub.springmongosample.domain.Ticket;
 import com.njdub.springmongosample.domain.TicketStatus;
 import com.njdub.springmongosample.model.NewTicketModel;
@@ -7,6 +8,7 @@ import com.njdub.springmongosample.repository.TicketRepository;
 import com.njdub.springmongosample.service.TicketService;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.util.List;
 
@@ -31,5 +33,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> getAll() {
         return ticketRepository.findAll();
+    }
+
+    @Override
+    public Ticket get(BigInteger id) {
+        return ticketRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ticket not found"));
     }
 }

@@ -112,6 +112,26 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get ticket by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/api/ticket/28990630846662114741169940893",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"ticket",
+						"28990630846662114741169940893"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
