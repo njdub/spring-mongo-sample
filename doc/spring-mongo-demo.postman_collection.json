@@ -169,6 +169,52 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Manager statistic",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/api/manager/statistic",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"manager",
+						"statistic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Seach Tickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/api/ticket/search?query=new",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"ticket",
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "new"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

@@ -1,12 +1,11 @@
 package com.njdub.springmongosample.configuration;
 
 import com.njdub.springmongosample.domain.Manager;
+import com.njdub.springmongosample.domain.Ticket;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.IndexDefinition;
-import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.index.IndexResolver;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
@@ -28,10 +27,9 @@ public class MongoMappingConfiguration {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void initIndicesAfterStartup() {
-        IndexOperations indexOps = mongoTemplate.indexOps(Manager.class);
         IndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
-        Iterable<? extends IndexDefinition> indexDefinitions = resolver.resolveIndexFor(Manager.class);
-        indexDefinitions.forEach(indexOps::ensureIndex);
+        resolver.resolveIndexFor(Manager.class).forEach(mongoTemplate.indexOps(Manager.class)::ensureIndex);
+        resolver.resolveIndexFor(Ticket.class).forEach(mongoTemplate.indexOps(Ticket.class)::ensureIndex);
     }
 
 }

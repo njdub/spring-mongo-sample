@@ -26,6 +26,11 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.getAll());
     }
 
+    @GetMapping("/api/ticket/search")
+    public ResponseEntity<List<Ticket>> getTicketsBySearchString(@RequestParam String query) {
+        return ResponseEntity.ok(ticketService.search(query));
+    }
+
     @GetMapping("/api/ticket/{id}")
     public ResponseEntity<Ticket> getTicket(@PathVariable BigInteger id) {
         return ResponseEntity.ok(ticketService.get(id));

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -20,7 +21,9 @@ public class Ticket {
     @Id
     private BigInteger id;
 
+    @TextIndexed(weight = 1.5f)
     private String title;
+    @TextIndexed
     private String description;
     private TicketStatus status;
     private Instant created;

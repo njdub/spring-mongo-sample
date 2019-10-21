@@ -14,4 +14,6 @@ public interface TicketService {
     Ticket assignToManager(BigInteger ticketId, BigInteger managerId);
 
     Ticket get(BigInteger id);
+
+    List<Ticket> search(String searchString);
 }

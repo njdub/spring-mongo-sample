@@ -7,6 +7,10 @@ import com.njdub.springmongosample.model.NewTicketModel;
 import com.njdub.springmongosample.repository.TicketRepository;
 import com.njdub.springmongosample.service.ManagerService;
 import com.njdub.springmongosample.service.TicketService;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
@@ -16,11 +20,15 @@ import java.util.List;
 @Component
 public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
+    private final MongoTemplate mongoTemplate;
 
     private final ManagerService managerService;
 
-    public TicketServiceImpl(TicketRepository ticketRepository, ManagerService managerService) {
+    public TicketServiceImpl(TicketRepository ticketRepository,
+                             MongoTemplate mongoTemplate,
+                             ManagerService managerService) {
         this.ticketRepository = ticketRepository;
+        this.mongoTemplate = mongoTemplate;
         this.managerService = managerService;
     }
 
@@ -51,5 +59,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket get(BigInteger id) {
         return ticketRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ticket not found"));
+    }
+
+    @Override
+    public List<Ticket> search(String searchString) {
+        TextCriteria criteria = TextCriteria.forDefaultLanguage().matching(searchString).caseSensitive(false);
+        Query query = TextQuery.queryText(criteria).sortByScore();
+        return mongoTemplate.find(query, Ticket.class);
     }
 }
