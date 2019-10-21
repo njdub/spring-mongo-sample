@@ -7,10 +7,8 @@ import com.njdub.springmongosample.domain.TicketStatus;
 import com.njdub.springmongosample.model.NewManagerModel;
 import com.njdub.springmongosample.repository.ManagerRepository;
 import com.njdub.springmongosample.service.ManagerService;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
@@ -50,12 +48,14 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public List<ManagerWithStatistic> getStatistic() {
         // TODO: Create constants for these field names strings
-        MatchOperation filterForInProgress = Aggregation.match(new Criteria("status").is(TicketStatus.IN_PROGRESS.name()));
-        GroupOperation groupByManagerId = Aggregation.group("managerId").count().as("activeTicketsCount");
-        LookupOperation lookupManagerData = Aggregation.lookup("managers", "_id", "_id", "manager");
-        SortOperation sortByTicketsCount = Aggregation.sort(Sort.by(Sort.Direction.ASC, "activeTicketsCount"));
-
-        Aggregation aggregation = Aggregation.newAggregation(filterForInProgress, groupByManagerId, sortByTicketsCount, lookupManagerData);
-        return mongoTemplate.aggregate(aggregation, "tickets", ManagerWithStatistic.class).getMappedResults();
+        LookupOperation lookupManagerData = Aggregation.lookup("tickets", "_id", "managerId", "tickets");
+        ComparisonOperators.Eq activeTicketCond = ComparisonOperators.Eq.valueOf("$$this.status").equalToValue(TicketStatus.IN_PROGRESS.name());
+        AggregationExpression activeTicketCount = ArithmeticOperators.Add.valueOf("$$value").add(ConditionalOperators.when(activeTicketCond).then(1).otherwise(0));
+        ProjectionOperation countActiveTicket = Aggregation
+                .project(Manager.class)
+                .and(ArrayOperators.Reduce.arrayOf("tickets").withInitialValue(0).reduce(activeTicketCount))
+                .as("activeTicketsCount");
+        Aggregation aggregation = Aggregation.newAggregation(lookupManagerData, countActiveTicket);
+        return mongoTemplate.aggregate(aggregation, "managers", ManagerWithStatistic.class).getMappedResults();
     }
 }
